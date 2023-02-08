@@ -6,14 +6,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 const testLinks = async (page, url) => {
-  const originalPage = `${page.url()}/${url}`;
+  const originalPage = `${page.url()}${url}`;
 
-  const header = page.getByRole("banner"); // header
-  const nav = header.getByRole("navigation"); // nav
+  // Disabling the header check because getting the header by the banner role doesn't work
+  // const header = page.getByRole("banner"); // header
+
+  const nav = page.getByRole("navigation"); // nav
 
   const homeLink = nav.getByRole("link", { name: "Home" });
   homeLink.click();
-  page.waitForNavigation();
   await expect.soft(page).toHaveURL("/index.html");
 
   await page.goto(originalPage);
@@ -21,7 +22,6 @@ const testLinks = async (page, url) => {
 
   const aboutLink = nav.getByText("About");
   aboutLink.click();
-  page.waitForNavigation();
   await expect.soft(page).toHaveURL("/about.html");
 
   await page.goto(originalPage);
@@ -29,7 +29,6 @@ const testLinks = async (page, url) => {
 
   const contactLink = nav.getByText("Contact");
   contactLink.click();
-  page.waitForNavigation();
   await expect.soft(page).toHaveURL("/contact.html");
 
   await page.goto(originalPage);
@@ -46,7 +45,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("Home");
 
-    // await testLinks(page, "index.html");
+    await testLinks(page, "index.html");
     await testFooter(page);
 
     const main = page.getByRole("main");
@@ -85,7 +84,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("About");
 
-    // await testLinks(page, "about.html");
+    await testLinks(page, "about.html");
     await testFooter(page);
 
     const main = page.getByRole("main");
@@ -119,7 +118,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("Contact");
 
-    // await testLinks(page, "contact.html");
+    await testLinks(page, "contact.html");
     await testFooter(page);
 
     const main = page.getByRole("main");
