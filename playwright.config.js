@@ -50,7 +50,7 @@ const config = {
       use: {
         ...devices["Desktop Chrome"],
         baseURL:
-          "https://Assignment-2-Forms-rashaunbrown.csis-1570-spring-2023.repl.co",
+          "https://Assignment-3-Semantic-Web-Pages-Solution.csis-1570-spring-2023.repl.co",
         headless: false,
       },
     },

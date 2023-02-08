@@ -5,34 +5,67 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
+const testLinks = async (page, url) => {
+  const originalPage = `${page.url()}/${url}`;
+
+  const header = page.getByRole("banner"); // header
+  const nav = header.getByRole("navigation"); // nav
+
+  const homeLink = nav.getByRole("link", { name: "Home" });
+  homeLink.click();
+  page.waitForNavigation();
+  await expect.soft(page).toHaveURL("/index.html");
+
+  await page.goto(originalPage);
+  await expect.soft(page).toHaveURL(originalPage);
+
+  const aboutLink = nav.getByText("About");
+  aboutLink.click();
+  page.waitForNavigation();
+  await expect.soft(page).toHaveURL("/about.html");
+
+  await page.goto(originalPage);
+  await expect.soft(page).toHaveURL(originalPage);
+
+  const contactLink = nav.getByText("Contact");
+  contactLink.click();
+  page.waitForNavigation();
+  await expect.soft(page).toHaveURL("/contact.html");
+
+  await page.goto(originalPage);
+  await expect.soft(page).toHaveURL(originalPage);
+};
+
+const testFooter = async (page) => {
+  const footer = page.getByRole("contentinfo"); // footer
+  await expect(footer.getByText("2023")).toBeVisible();
+};
+
 test.describe("Assignment 2", () => {
   test("Home should pass tests", async ({ page }) => {
     const title = await page.title();
     expect.soft(title).toContain("Home");
 
-    // TODO:
-    // Enforce there's a site name in the header - and is not an h1
-    // Enforce that the nav is in the header
-    // Enforce name and year in the footer
-    // Enforce that all three links are in the nav
-    // Enforce that all three links work
-    // Copy this pattern for the other pages
-    const header = page.getByRole("banner"); // header
-    const nav = page.getByRole("navigation"); // nav
-    page.getByRole("main"); // main
-    page.getByRole("contentinfo"); // footer
+    // await testLinks(page, "index.html");
+    await testFooter(page);
 
-    // TODO: make sure the heading is in the main
-    page.getByRole("heading", { name: "Home" });
+    const main = page.getByRole("main");
+    await expect(main).toBeVisible();
 
-    // TODO: Look for the 3 sections, each with a secondary heading and a paragraph
+    const h1 = main.getByRole("heading", { name: "Home", level: 1 });
+    await expect.soft(h1).toBeVisible();
+
+    // Not testing that these are in sections because apparently sections only get roles if they have a name
+    // I didn't teach that in class, so I'm not going to test for it
+    const h2s = await main.getByRole("heading", { level: 2 }).all();
+    const paragraphs = await main.getByRole("paragraph").all();
+    expect.soft(h2s).toHaveLength(3);
+    expect.soft(paragraphs).toHaveLength(3);
   });
 
   test("Home should pass w3 validation", async ({ page }) => {
     const newURL = `https://validator.w3.org/nu/?&doc=${page.url()}`;
-
     await page.goto(newURL);
-
     await expect.soft(page).toHaveURL(newURL);
 
     expect
@@ -46,27 +79,27 @@ test.describe("Assignment 2", () => {
   });
 
   test("About should pass tests", async ({ page }) => {
-    // TODO: use clicks to get here instead
     await page.goto("/about.html");
     await expect.soft(page).toHaveURL("/about.html");
 
     const title = await page.title();
     expect.soft(title).toContain("About");
 
-    page.getByRole("heading", { name: "About" });
+    // await testLinks(page, "about.html");
+    await testFooter(page);
 
-    // TODO: make sure heading and image are in the main
+    const main = page.getByRole("main");
 
-    // TODO: copy the pattern from the home page
+    const h1 = main.getByRole("heading", { name: "About", level: 1 });
+    await expect.soft(h1).toBeVisible();
 
-    // TODO: enforce image works
+    const img = main.getByRole("img");
+    await expect.soft(img).toBeVisible();
   });
 
   test("About should pass w3 validation", async ({ page }) => {
     const newURL = `https://validator.w3.org/nu/?&doc=${page.url()}/about.html`;
-
     await page.goto(newURL);
-
     await expect.soft(page).toHaveURL(newURL);
 
     expect
@@ -80,43 +113,44 @@ test.describe("Assignment 2", () => {
   });
 
   test("Contact should pass tests", async ({ page }) => {
-    // TODO: use clicks to get here instead
     await page.goto("/contact.html");
     await expect.soft(page).toHaveURL("/contact.html");
 
     const title = await page.title();
     expect.soft(title).toContain("Contact");
 
-    page.getByRole("heading", { name: "Contact" });
+    // await testLinks(page, "contact.html");
+    await testFooter(page);
 
-    // TODO: make sure heading and form are in the main
+    const main = page.getByRole("main");
 
-    // TODO: Make sure the form exists and these inputs are in there
+    const h1 = main.getByRole("heading", { name: "Contact", level: 1 });
+    await expect.soft(h1).toBeVisible();
+
+    // Not testing that these are in a form because apparently forms only get roles if they have a name
 
     // Name input
-    page.getByLabel("Name");
+    main.getByLabel("Name");
 
     // Email input
     const emailInput = page.getByLabel("Email");
     expect.soft(await emailInput.getAttribute("type")).toBe("email");
 
     // Message input
-    const messageInput = page.getByLabel("Message");
+    const messageInput = main.getByLabel("Message");
     const messageInputNodeName = await messageInput.evaluate(
       (node) => node.nodeName
     );
     expect.soft(messageInputNodeName).toBe("TEXTAREA");
 
     // Submit button
-    const submitButton = page.getByText("Submit");
+    const submitButton = main.getByText("Submit");
     expect.soft(await submitButton.getAttribute("type")).toBe("submit");
   });
 
   test("Contact should pass w3 validation", async ({ page }) => {
     const newURL = `https://validator.w3.org/nu/?&doc=${page.url()}/contact.html`;
-
     await page.goto(newURL);
-
     await expect.soft(page).toHaveURL(newURL);
 
     expect
