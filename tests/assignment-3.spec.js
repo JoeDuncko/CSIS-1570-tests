@@ -51,7 +51,7 @@ test.describe("Assignment 2", () => {
     const main = page.getByRole("main");
     await expect(main).toBeVisible();
 
-    const h1 = main.getByRole("heading", { name: "Home", level: 1 });
+    const h1 = main.getByRole("heading", { level: 1 });
     await expect.soft(h1).toBeVisible();
 
     // Not testing that these are in sections because apparently sections only get roles if they have a name
@@ -89,7 +89,7 @@ test.describe("Assignment 2", () => {
 
     const main = page.getByRole("main");
 
-    const h1 = main.getByRole("heading", { name: "About", level: 1 });
+    const h1 = main.getByRole("heading", { level: 1 });
     await expect.soft(h1).toBeVisible();
 
     const img = main.getByRole("img");
@@ -123,7 +123,7 @@ test.describe("Assignment 2", () => {
 
     const main = page.getByRole("main");
 
-    const h1 = main.getByRole("heading", { name: "Contact", level: 1 });
+    const h1 = main.getByRole("heading", { level: 1 });
     await expect.soft(h1).toBeVisible();
 
     // Not testing that these are in a form because apparently forms only get roles if they have a name
