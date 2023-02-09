@@ -5,13 +5,13 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-const testLinks = async (page, url) => {
-  const originalPage = `${page.url()}${url}`;
+const testLinks = async (page) => {
+  const originalPage = page.url();
 
   // Disabling the header check because getting the header by the banner role doesn't work
   // const header = page.getByRole("banner"); // header
 
-  const nav = page.getByRole("navigation"); // nav
+  const nav = page.getByRole("navigation");
 
   const homeLink = nav.getByRole("link", { name: "Home" });
   homeLink.click();
@@ -36,7 +36,7 @@ const testLinks = async (page, url) => {
 };
 
 const testFooter = async (page) => {
-  const footer = page.getByRole("contentinfo"); // footer
+  const footer = page.getByRole("contentinfo");
   await expect(footer.getByText("2023")).toBeVisible();
 };
 
@@ -45,7 +45,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("Home");
 
-    await testLinks(page, "index.html");
+    await testLinks(page);
     await testFooter(page);
 
     const main = page.getByRole("main");
@@ -84,7 +84,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("About");
 
-    await testLinks(page, "about.html");
+    await testLinks(page);
     await testFooter(page);
 
     const main = page.getByRole("main");
@@ -118,7 +118,7 @@ test.describe("Assignment 2", () => {
     const title = await page.title();
     expect.soft(title).toContain("Contact");
 
-    await testLinks(page, "contact.html");
+    await testLinks(page);
     await testFooter(page);
 
     const main = page.getByRole("main");
