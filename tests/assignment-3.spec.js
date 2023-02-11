@@ -143,7 +143,7 @@ test.describe("Assignment 2", () => {
     expect.soft(messageInputNodeName).toBe("TEXTAREA");
 
     // Submit button
-    const submitButton = main.getByText("Submit");
+    const submitButton = main.getByText(/send|submit/i);
     expect.soft(await submitButton.getAttribute("type")).toBe("submit");
   });
 
