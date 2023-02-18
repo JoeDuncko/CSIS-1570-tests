@@ -40,7 +40,7 @@ const testFooter = async (page) => {
   await expect(footer.getByText("2023")).toBeVisible();
 };
 
-test.describe("Assignment 2", () => {
+test.describe("Assignment 3", () => {
   test("Home should pass tests", async ({ page }) => {
     const title = await page.title();
     expect.soft(title).toContain("Home");
