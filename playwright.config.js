@@ -7,6 +7,9 @@ const { devices } = require("@playwright/test");
  */
 // require('dotenv').config();
 
+const URL =
+  "https://Assignment-6-SaSS-Pricing-Page-Solution.csis-1570-spring-2023.repl.co";
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  * @type {import('@playwright/test').PlaywrightTestConfig}
@@ -46,11 +49,18 @@ const config = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium",
+      name: "desktop",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL:
-          "https://Assignment-6-SaSS-Pricing-Page-Solution.csis-1570-spring-2023.repl.co",
+        baseURL: URL,
+        headless: false,
+      },
+    },
+    {
+      name: "mobile",
+      use: {
+        ...devices["Nexus 10"],
+        baseURL: URL,
         headless: false,
       },
     },
