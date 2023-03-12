@@ -50,7 +50,7 @@ const config = {
       use: {
         ...devices["Desktop Chrome"],
         baseURL:
-          "https://Assignment-4-Styling-a-page-Solution.csis-1570-spring-2023.repl.co",
+          "https://Assignment-6-SaSS-Pricing-Page-Solution.csis-1570-spring-2023.repl.co",
         headless: false,
       },
     },
