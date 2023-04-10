@@ -8,7 +8,7 @@ const { devices } = require("@playwright/test");
 // require('dotenv').config();
 
 const URL =
-  "https://Assignment-6-SaSS-Pricing-Page-Solution.csis-1570-spring-2023.repl.co";
+  "https://Assignment-6-SaaS-Landing-Page-knullmarks.csis-1570-spring-2023.repl.co";
 
 /**
  * @see https://playwright.dev/docs/test-configuration
